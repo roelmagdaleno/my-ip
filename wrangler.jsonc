@@ -6,9 +6,6 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "my-ip",
 	"compatibility_date": "2025-04-10",
-	"assets": {
-		"directory": "./public"
-	},
 	"observability": {
 		"enabled": true
 	},
