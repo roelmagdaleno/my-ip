@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your IP Address</title>
+    <!-- Link to your compiled TailwindCSS output -->
+    <link rel="stylesheet" href="output.css" />
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900">
+<!-- Container for the IP display and copy confirmation -->
+<div id="ipContainer" class="flex flex-col items-center px-4">
+    <!-- IP Address Display: Responsive font sizes for mobile and larger screens -->
+    <div id="ipDisplay" class="mt-8 text-4xl sm:text-8xl font-bold cursor-pointer select-none">
+        Loading...
+    </div>
+    <!-- Copied Message: initially invisible (layout is preserved) -->
+    <div id="copiedMsg" class="mt-4 text-lg text-green-600 invisible">
+        Copied!
+    </div>
+</div>
+
+<script>
+    // Fetch the visitor's IP from the Cloudflare Pages function at the '/api' endpoint.
+    fetch("/ip")
+    .then((response) => response.json())
+    .then((data) => {
+        const ipDisplay = document.getElementById("ipDisplay");
+        const copiedMsg = document.getElementById("copiedMsg");
+
+        ipDisplay.textContent = data.ip;
+
+        // When the IP is clicked/tapped, copy it to the clipboard and display the confirmation message.
+        ipDisplay.addEventListener("click", () => {
+            navigator.clipboard
+            .writeText(data.ip)
+            .then(() => {
+                // Remove 'invisible' and add 'visible' to show the message.
+                copiedMsg.classList.remove("invisible");
+                copiedMsg.classList.add("visible");
+
+                // After 2 seconds, hide the confirmation message again.
+                setTimeout(() => {
+                    copiedMsg.classList.remove("visible");
+                    copiedMsg.classList.add("invisible");
+                }, 2000);
+            })
+            .catch((err) => {
+                console.error("Copy failed!", err);
+            });
+        });
+    })
+    .catch((err) => {
+        console.error("Error fetching IP:", err);
+        document.getElementById("ipDisplay").textContent = "Error";
+    });
+</script>
+</body>
+</html>
