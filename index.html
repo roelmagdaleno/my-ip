@@ -22,7 +22,7 @@
 
 <script>
     // Fetch the visitor's IP from the Cloudflare Pages function at the '/api' endpoint.
-    fetch("/ip")
+    fetch("https://api.ipify.org/?format=json")
     .then((response) => response.json())
     .then((data) => {
         const ipDisplay = document.getElementById("ipDisplay");
